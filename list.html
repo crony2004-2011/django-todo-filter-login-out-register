@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+
+	body{
+		background-color: #638CB8;
+	}
+	.center-column{
+		width:600px;
+		margin: 20px auto;
+		padding:20px;
+		background-color: #fff;
+		border-radius: 3px;
+	}
+</style>
+<div class="center-column">
+    <a href="{% url 'signout' %}">SIgn Out</a>
+    <form method="GET">
+        <div class="form-group">
+            Search Tasks By Assignee:
+            {{my_filter.form}}
+            <input type="submit" value="Search...">
+        </div>
+    </form>
+
+
+    <form method="POST" action=" ">
+        {% csrf_token %}
+        Assisgned By: {{form.assign}}<br>
+            Add Tasks :{{form.title}}<br>
+        <input class="btn btn-info" type="submit" name="Create Task">
+    </form>
+<br><br>
+    <div class="todo-list">
+
+        {% for task in tasks %}
+        <div class="item-row">
+
+            <a class="btn btn-sm btn-info" href="{% url 'update_task' task.id %}">Update</a>
+            <a class="btn btn-sm btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+
+            {% if task.complete == True %}
+            <strike>{{task.title}}</strike>
+            <strike>{{task.assign}}</strike>
+            {% else %}
+            Task: <span>{{task.title}}</span>
+            Assigned By: <span>{{task.assign}}</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <p>Tasks Completed: {{completed}}</p>
+    </div>
+</div>
